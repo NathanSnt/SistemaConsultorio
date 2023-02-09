@@ -46,7 +46,6 @@ namespace Consultorio
             this.pctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctLogo.TabIndex = 0;
             this.pctLogo.TabStop = false;
-            this.pctLogo.Click += new System.EventHandler(this.pctLogo_Click);
             // 
             // lblPorcentagem
             // 
@@ -57,7 +56,6 @@ namespace Consultorio
             this.lblPorcentagem.Size = new System.Drawing.Size(35, 24);
             this.lblPorcentagem.TabIndex = 1;
             this.lblPorcentagem.Text = "0%";
-            this.lblPorcentagem.Click += new System.EventHandler(this.lblPorcentagem_Click);
             // 
             // pgbCarregando
             // 
@@ -65,7 +63,6 @@ namespace Consultorio
             this.pgbCarregando.Name = "pgbCarregando";
             this.pgbCarregando.Size = new System.Drawing.Size(264, 23);
             this.pgbCarregando.TabIndex = 2;
-            this.pgbCarregando.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // lblCarregando
             // 
@@ -76,7 +73,6 @@ namespace Consultorio
             this.lblCarregando.Size = new System.Drawing.Size(125, 24);
             this.lblCarregando.TabIndex = 3;
             this.lblCarregando.Text = "Carregando...";
-            this.lblCarregando.Click += new System.EventHandler(this.lblCarregando_Click);
             // 
             // frmSplash
             // 

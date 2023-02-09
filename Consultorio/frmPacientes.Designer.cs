@@ -1,7 +1,7 @@
 ﻿
 namespace Consultorio
 {
-    partial class frmConsulta
+    partial class frmPacientes
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace Consultorio
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConsulta));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPacientes));
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnVoltar = new System.Windows.Forms.Button();
             this.btnPesquisar = new System.Windows.Forms.Button();
@@ -49,7 +49,7 @@ namespace Consultorio
             this.panel1.Location = new System.Drawing.Point(-2, 504);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(785, 53);
-            this.panel1.TabIndex = 0;
+            this.panel1.TabIndex = 1;
             // 
             // btnVoltar
             // 
@@ -121,7 +121,7 @@ namespace Consultorio
             this.btnAlterar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAlterar.UseVisualStyleBackColor = true;
             // 
-            // frmConsulta
+            // frmPacientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -130,10 +130,10 @@ namespace Consultorio
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "frmConsulta";
+            this.Name = "frmPacientes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Consultório Médico";
-            this.Load += new System.EventHandler(this.frmConsulta_Load);
+            this.Load += new System.EventHandler(this.frmPacientes_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

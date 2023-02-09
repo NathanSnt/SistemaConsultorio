@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace Consultorio
 {
-    public partial class frmConsulta : Form
+    public partial class frmConvenios : Form
     {
         //Criando variáveis para controle do menu
         const int MF_BYCOMMAND = 0X400;
@@ -22,7 +22,7 @@ namespace Consultorio
         [DllImport("user32")]
         static extern int GetMenuItemCount(IntPtr hWnd);
 
-        public frmConsulta()
+        public frmConvenios()
         {
             InitializeComponent();
         }
@@ -34,7 +34,7 @@ namespace Consultorio
             this.Hide();
         }
 
-        private void frmConsulta_Load(object sender, EventArgs e)
+        private void frmConvenios_Load(object sender, EventArgs e)
         {
             IntPtr hMenu = GetSystemMenu(this.Handle, false);
             int MenuCount = GetMenuItemCount(hMenu) - 1;
