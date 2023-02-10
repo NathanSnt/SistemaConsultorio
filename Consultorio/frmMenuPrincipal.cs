@@ -30,6 +30,7 @@ namespace Consultorio
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
+            //this.Close();
             frmLogin voltar = new frmLogin();
             voltar.Show();
             this.Hide();
@@ -37,6 +38,10 @@ namespace Consultorio
 
         private void btnConsultas_Click(object sender, EventArgs e)
         {
+            //Hide();
+            //using (frmConsulta abrir = new frmConsulta())
+            //   abrir.ShowDialog();
+            //Show();
             frmConsulta abrir = new frmConsulta();
             abrir.Show();
             this.Hide();

@@ -29,6 +29,7 @@ namespace Consultorio
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
+            //this.Close();
             frmMenuPrincipal voltar = new frmMenuPrincipal();
             voltar.Show();
             this.Hide();

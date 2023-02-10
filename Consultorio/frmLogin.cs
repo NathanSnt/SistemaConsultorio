@@ -35,6 +35,10 @@ namespace Consultorio
             //if (usuario == "admin" && senha == "admin")
             if (usuario.Equals("admin") && senha.Equals("admin"))
             {
+                //Hide();
+                //using (frmMenuPrincipal menu = new frmMenuPrincipal())
+                //    menu.ShowDialog();
+                //Show();
                 frmMenuPrincipal menu = new frmMenuPrincipal();
                 menu.Show();
                 this.Hide();
