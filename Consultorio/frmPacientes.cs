@@ -22,9 +22,46 @@ namespace Consultorio
         [DllImport("user32")]
         static extern int GetMenuItemCount(IntPtr hWnd);
 
+        public void desabilitarCampos()
+        {
+            mskCodigo.Enabled = false;
+            txtNome.Enabled = false;
+            txtEmail.Enabled = false;
+            mskTelefone.Enabled = false;
+            mskCPF.Enabled = false;
+            txtEndereco.Enabled = false;
+            mskCEP.Enabled = false;
+            txtBairro.Enabled = false;
+            txtCidade.Enabled = false;
+            cbbEstados.Enabled = false;
+            btnCadastrar.Enabled = false;
+            btnAlterar.Enabled = false;
+            btnExcluir.Enabled = false;
+            btnLimpar.Enabled = false;
+        }
+
+        public void habilitarCampos()
+        {
+            txtNome.Enabled = true;
+            txtNome.Focus();
+            txtEmail.Enabled = true;
+            mskTelefone.Enabled = true;
+            mskCPF.Enabled = true;
+            txtEndereco.Enabled = true;
+            mskCEP.Enabled = true;
+            txtBairro.Enabled = true;
+            txtCidade.Enabled = true;
+            cbbEstados.Enabled = true;
+            btnCadastrar.Enabled = true;
+            btnAlterar.Enabled = true;
+            btnExcluir.Enabled = true;
+            btnLimpar.Enabled = true;
+        }
+
         public frmPacientes()
         {
             InitializeComponent();
+            desabilitarCampos();
         }
 
         private void btnVoltar_Click(object sender, EventArgs e)
@@ -39,6 +76,25 @@ namespace Consultorio
             IntPtr hMenu = GetSystemMenu(this.Handle, false);
             int MenuCount = GetMenuItemCount(hMenu) - 1;
             RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
+        }
+
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            mskCodigo.Clear();
+            txtNome.Clear();
+            txtEmail.Clear();
+            mskTelefone.Clear();
+            mskCPF.Clear();
+            txtEndereco.Clear();
+            mskCEP.Clear();
+            txtBairro.Clear();
+            txtCidade.Clear();
+            cbbEstados.SelectedIndex = 0;
+        }
+
+        private void btnNovo_Click(object sender, EventArgs e)
+        {
+            habilitarCampos();
         }
     }
 }

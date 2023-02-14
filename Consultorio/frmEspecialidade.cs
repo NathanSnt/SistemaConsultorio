@@ -17,9 +17,11 @@ namespace Consultorio
             InitializeComponent();
         }
 
-        private void btnCadastrar_Click(object sender, EventArgs e)
+        private void btnPesquisar_Click(object sender, EventArgs e)
         {
-            
+            frmPesquisar abrir = new frmPesquisar();
+            abrir.ShowDialog();
+
         }
     }
 }
