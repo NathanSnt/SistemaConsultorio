@@ -59,7 +59,10 @@ namespace Consultorio
             this.lblNome = new System.Windows.Forms.Label();
             this.cbbEstados = new System.Windows.Forms.ComboBox();
             this.lblEstado = new System.Windows.Forms.Label();
-            this.btnCarregaEndereco = new System.Windows.Forms.Button();
+            this.lblNumero = new System.Windows.Forms.Label();
+            this.txtNumero = new System.Windows.Forms.TextBox();
+            this.lblComplemento = new System.Windows.Forms.Label();
+            this.txtComplemento = new System.Windows.Forms.TextBox();
             this.pnlMenu.SuspendLayout();
             this.gpbMedico.SuspendLayout();
             this.SuspendLayout();
@@ -184,7 +187,10 @@ namespace Consultorio
             // 
             // gpbMedico
             // 
-            this.gpbMedico.Controls.Add(this.btnCarregaEndereco);
+            this.gpbMedico.Controls.Add(this.lblComplemento);
+            this.gpbMedico.Controls.Add(this.txtComplemento);
+            this.gpbMedico.Controls.Add(this.lblNumero);
+            this.gpbMedico.Controls.Add(this.txtNumero);
             this.gpbMedico.Controls.Add(this.mskCPF);
             this.gpbMedico.Controls.Add(this.lblCPF);
             this.gpbMedico.Controls.Add(this.lblCidade);
@@ -221,6 +227,7 @@ namespace Consultorio
             this.mskCPF.Size = new System.Drawing.Size(122, 26);
             this.mskCPF.TabIndex = 5;
             this.mskCPF.ValidatingType = typeof(int);
+            this.mskCPF.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mskCPF_KeyDown);
             // 
             // lblCPF
             // 
@@ -272,18 +279,19 @@ namespace Consultorio
             // 
             // mskCEP
             // 
-            this.mskCEP.Location = new System.Drawing.Point(429, 184);
-            this.mskCEP.Mask = "00000-000";
+            this.mskCEP.Location = new System.Drawing.Point(524, 184);
+            this.mskCEP.Mask = "00000000";
             this.mskCEP.Name = "mskCEP";
             this.mskCEP.Size = new System.Drawing.Size(88, 26);
             this.mskCEP.TabIndex = 7;
             this.mskCEP.ValidatingType = typeof(int);
+            this.mskCEP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mskCEP_KeyDown);
             // 
             // lblCEP
             // 
             this.lblCEP.AutoSize = true;
             this.lblCEP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCEP.Location = new System.Drawing.Point(425, 161);
+            this.lblCEP.Location = new System.Drawing.Point(520, 161);
             this.lblCEP.Name = "lblCEP";
             this.lblCEP.Size = new System.Drawing.Size(41, 20);
             this.lblCEP.TabIndex = 17;
@@ -374,6 +382,7 @@ namespace Consultorio
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(374, 26);
             this.txtEmail.TabIndex = 3;
+            this.txtEmail.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEmail_KeyDown);
             // 
             // lblNome
             // 
@@ -389,7 +398,7 @@ namespace Consultorio
             // 
             this.cbbEstados.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbbEstados.FormattingEnabled = true;
-            this.cbbEstados.Location = new System.Drawing.Point(10, 324);
+            this.cbbEstados.Location = new System.Drawing.Point(345, 313);
             this.cbbEstados.Name = "cbbEstados";
             this.cbbEstados.Size = new System.Drawing.Size(191, 24);
             this.cbbEstados.TabIndex = 10;
@@ -398,21 +407,49 @@ namespace Consultorio
             // 
             this.lblEstado.AutoSize = true;
             this.lblEstado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEstado.Location = new System.Drawing.Point(6, 301);
+            this.lblEstado.Location = new System.Drawing.Point(341, 290);
             this.lblEstado.Name = "lblEstado";
             this.lblEstado.Size = new System.Drawing.Size(60, 20);
             this.lblEstado.TabIndex = 7;
             this.lblEstado.Text = "Estado";
             // 
-            // btnCarregaEndereco
+            // lblNumero
             // 
-            this.btnCarregaEndereco.Location = new System.Drawing.Point(244, 310);
-            this.btnCarregaEndereco.Name = "btnCarregaEndereco";
-            this.btnCarregaEndereco.Size = new System.Drawing.Size(290, 37);
-            this.btnCarregaEndereco.TabIndex = 24;
-            this.btnCarregaEndereco.Text = "Carregar endereço";
-            this.btnCarregaEndereco.UseVisualStyleBackColor = true;
-            this.btnCarregaEndereco.Click += new System.EventHandler(this.btnCarregaEndereco_Click);
+            this.lblNumero.AutoSize = true;
+            this.lblNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumero.Location = new System.Drawing.Point(426, 161);
+            this.lblNumero.Name = "lblNumero";
+            this.lblNumero.Size = new System.Drawing.Size(65, 20);
+            this.lblNumero.TabIndex = 25;
+            this.lblNumero.Text = "Número";
+            // 
+            // txtNumero
+            // 
+            this.txtNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNumero.Location = new System.Drawing.Point(430, 184);
+            this.txtNumero.MaxLength = 50;
+            this.txtNumero.Name = "txtNumero";
+            this.txtNumero.Size = new System.Drawing.Size(83, 26);
+            this.txtNumero.TabIndex = 24;
+            // 
+            // lblComplemento
+            // 
+            this.lblComplemento.AutoSize = true;
+            this.lblComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblComplemento.Location = new System.Drawing.Point(6, 290);
+            this.lblComplemento.Name = "lblComplemento";
+            this.lblComplemento.Size = new System.Drawing.Size(108, 20);
+            this.lblComplemento.TabIndex = 27;
+            this.lblComplemento.Text = "Complemento";
+            // 
+            // txtComplemento
+            // 
+            this.txtComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtComplemento.Location = new System.Drawing.Point(10, 313);
+            this.txtComplemento.MaxLength = 50;
+            this.txtComplemento.Name = "txtComplemento";
+            this.txtComplemento.Size = new System.Drawing.Size(302, 26);
+            this.txtComplemento.TabIndex = 26;
             // 
             // frmPacientes
             // 
@@ -466,6 +503,9 @@ namespace Consultorio
         private System.Windows.Forms.Label lblCPF;
         private System.Windows.Forms.Button btnLimpar;
         private System.Windows.Forms.Button btnNovo;
-        private System.Windows.Forms.Button btnCarregaEndereco;
+        private System.Windows.Forms.Label lblComplemento;
+        private System.Windows.Forms.TextBox txtComplemento;
+        private System.Windows.Forms.Label lblNumero;
+        private System.Windows.Forms.TextBox txtNumero;
     }
 }

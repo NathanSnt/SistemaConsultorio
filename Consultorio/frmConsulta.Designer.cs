@@ -36,6 +36,7 @@ namespace Consultorio
             this.btnCadastrar = new System.Windows.Forms.Button();
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnAlterar = new System.Windows.Forms.Button();
+            this.btnTestarConexao = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,11 +122,23 @@ namespace Consultorio
             this.btnAlterar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAlterar.UseVisualStyleBackColor = true;
             // 
+            // btnTestarConexao
+            // 
+            this.btnTestarConexao.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTestarConexao.Location = new System.Drawing.Point(65, 80);
+            this.btnTestarConexao.Name = "btnTestarConexao";
+            this.btnTestarConexao.Size = new System.Drawing.Size(655, 351);
+            this.btnTestarConexao.TabIndex = 1;
+            this.btnTestarConexao.Text = "Testar conexão com o banco de dados";
+            this.btnTestarConexao.UseVisualStyleBackColor = true;
+            this.btnTestarConexao.Click += new System.EventHandler(this.btnTestarConexao_Click);
+            // 
             // frmConsulta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(780, 557);
+            this.Controls.Add(this.btnTestarConexao);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -147,5 +160,6 @@ namespace Consultorio
         private System.Windows.Forms.Button btnCadastrar;
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnAlterar;
+        private System.Windows.Forms.Button btnTestarConexao;
     }
 }

@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Globalization;
+using System.Text.RegularExpressions;
 //using Correios.Net; // NÃO ESTÁ SENDO UTILIZADO
-using ViaCep;
+//using ViaCep;
 
 namespace Consultorio
 {
@@ -78,12 +80,15 @@ namespace Consultorio
             mskTelefone.Enabled = false;
             txtEndereco.Enabled = false;
             btnCadastrar.Enabled = false;
+            txtComplemento.Enabled = false;
+            txtNumero.Enabled = false;
         }
 
         public void habilitarCampos()
         {
             mskCPF.Enabled = true;
             mskCEP.Enabled = true;
+            btnNovo.Enabled = true;
             txtNome.Enabled = true;
             txtEmail.Enabled = true;
             btnLimpar.Enabled = true;
@@ -95,6 +100,8 @@ namespace Consultorio
             txtEndereco.Enabled = true;
             btnCadastrar.Enabled = true;
             mskTelefone.Enabled = true;
+            txtComplemento.Enabled = true;
+            txtNumero.Enabled = true;
             txtNome.Focus();
         }
 
@@ -141,9 +148,11 @@ namespace Consultorio
             mskCodigo.Clear();
             txtBairro.Clear();
             txtCidade.Clear();
+            txtNumero.Clear();
             mskTelefone.Clear();
             txtEndereco.Clear();
             cbbEstados.Text = "";
+            txtComplemento.Clear();
         }
 
         private void btnVoltar_Click(object sender, EventArgs e)
@@ -169,6 +178,7 @@ namespace Consultorio
         private void btnNovo_Click(object sender, EventArgs e)
         {
             habilitarCampos();
+            btnNovo.Enabled = false;
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -184,6 +194,8 @@ namespace Consultorio
 
         private void btnCarregaEndereco_Click(object sender, EventArgs e)
         {
+
+            
             // NÃO FUNCIONA
             //Address endereco = SearchZip.GetAddress("04037000", 1000);
             //txtEndereco.Text = endereco.Street;
@@ -207,6 +219,189 @@ namespace Consultorio
             //txtCidade.Text = resultado.City;
             //txtBairro.Text = resultado.Neighborhood;
             //cbbEstados.Text = resultado.StateInitials;
+        }
+
+        public void buscaCEP(string cep)
+        {
+            WSCorreios.AtendeClienteClient ws = new WSCorreios.AtendeClienteClient();
+
+            try
+            {
+                WSCorreios.enderecoERP end = ws.consultaCEP(cep);
+                txtEndereco.Text = end.end;
+                txtBairro.Text = end.bairro;
+                txtCidade.Text = end.cidade;
+                cbbEstados.Text = end.uf;
+                txtComplemento.Text = end.complemento2;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Insira um CEP válido!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                mskCEP.Clear();
+                mskCEP.Focus();
+            }
+        }
+
+        private void mskCEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                buscaCEP(mskCEP.Text);
+                txtNumero.Focus();
+            }
+        }
+
+        public static bool validaEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                /*
+                 * O que esperava de cada trecho:
+                 * [a-z0-9.]+ - parte antes do @ do e-mail, nome do usuário;
+                 * @ - caractere de arroba obrigatório;
+                 * [a-z0-9]+ - parte depois do @ do e-mail, nome do provedor;
+                 * \. - caractere de ponto depois do nome do provedor;
+                 * [a-z]+ - geralmente onde é colocado o .com;
+                 * \. - caractere de ponto depois do .com, só deveria ser obrigatório caso haja por exemplo um .br ou a abreviação de qualquer outro país no final do e-mail;
+                 * ([a-z]+)? - geralmente onde é colocado a abreviação do país.
+                 */
+                email = Regex.Replace(email, @"(@)(.+)$", 
+                    DomainMapper, RegexOptions.None, 
+                    TimeSpan.FromMilliseconds(200));
+
+                string DomainMapper(Match match)
+                {
+                    var idn = new IdnMapping();
+                    string domainName = idn.GetAscii(match.Groups[2].Value);
+                    return match.Groups[1].Value + domainName;
+                }
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+            try
+            {
+                return Regex.IsMatch(email,
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.IgnoreCase,
+                    TimeSpan.FromMilliseconds(250));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
+        }
+
+        public static bool validaCPF (string cpf)
+        {
+            string valor = cpf.Replace(".", "");
+            valor = valor.Replace("-", "");
+            
+            if (valor.Length != 11)
+                return false;
+
+            bool igual = true;
+
+            for (int i = 1; i < 11 && igual; i++)
+                if (valor[i] != valor[0])
+                    igual = false;
+
+            if (igual || valor == "12345678909")
+                return false;
+
+            int[] numeros = new int[11];
+
+            for (int i = 0; i < 11; i++)
+                numeros[i] = int.Parse(valor[i].ToString());
+
+            int soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += (10 - i) * numeros[i];
+
+            int resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[9] != 0)
+                    return false;
+            }
+            else if (numeros[9] != 11 - resultado)
+                return false;
+
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+                soma += (11 - i) * numeros[i];
+
+            resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[10] != 0)
+                    return false;
+            }
+            else if (numeros[10] != 11 - resultado)
+                return false;
+            return true;
+        }
+
+        private void mskCPF_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                bool valida = validaCPF(mskCPF.Text);
+
+                if (valida == true)
+                {
+                    mskCEP.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Insira um CPF válido!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                    mskCPF.Clear();
+                    mskCPF.Focus();
+                }
+            }
+        }
+
+        private void txtEmail_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                bool valida = validaEmail(txtEmail.Text);
+
+                if (valida == true)
+                {
+                    mskTelefone.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Insira um E-mail válido!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                    txtEmail.Clear();
+                    txtEmail.Focus();
+                }
+            }
         }
     }
 }

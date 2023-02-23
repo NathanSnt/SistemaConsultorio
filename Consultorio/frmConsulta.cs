@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using MySql.Data.MySqlClient;
 
 namespace Consultorio
 {
@@ -40,6 +41,20 @@ namespace Consultorio
             IntPtr hMenu = GetSystemMenu(this.Handle, false);
             int MenuCount = GetMenuItemCount(hMenu) - 1;
             RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
+        }
+
+        private void btnTestarConexao_Click(object sender, EventArgs e)
+        {
+
+            MySqlConnection conn = new MySqlConnection();
+
+            conn.ConnectionString = "Server=localhost;Port=3306;Database=db_usuarios;Uid=root;Pwd='';";
+
+            conn.Open();
+            MessageBox.Show("Banco de dados conectado!");
+
+            conn.Close();
+
         }
     }
 }
