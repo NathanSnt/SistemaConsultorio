@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 //using Correios.Net; // NÃO ESTÁ SENDO UTILIZADO
 //using ViaCep;
 
@@ -105,8 +106,11 @@ namespace Consultorio
             txtNome.Focus();
         }
 
-        public void verificarCampo()
+        public bool verificarCampo()
         {
+            bool cpfValido = validaCPF(mskCPF.Text);
+            bool emailValido = validaEmail(txtEmail.Text);
+            
             if (txtNome.Text.Equals("")
                 || cbbEstados.Text == ""
                 || txtEmail.Text.Equals("")
@@ -118,24 +122,29 @@ namespace Consultorio
                 || mskCEP.Text.Equals("     -")
                 || mskTelefone.Text.Contains("  ")
                 || mskCPF.Text.Equals("   .   .   -")
-                || mskTelefone.Text.Equals("(  )      -"))
+                || mskTelefone.Text.Equals("(  )      -")
+                || cpfValido
+                || emailValido)
             {
-                MessageBox.Show("Favor inserir valores!",
+                MessageBox.Show("Favor inserir valores corretamente!",
                     "Mensagem do Sistema",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information,
                     MessageBoxDefaultButton.Button1);
+
                 txtNome.Focus();
+                return false;
             }
             else
             {
-                MessageBox.Show("Cadastrado com Sucesso!",
-                    "Mensagem do Sistema",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1);
+                //MessageBox.Show("Cadastrado com Sucesso!",
+                //    "Mensagem do Sistema",
+                //    MessageBoxButtons.OK,
+                //    MessageBoxIcon.Information,
+                //    MessageBoxDefaultButton.Button1);
                 desabilitarCampos();
-                limparCampos();
+                //limparCampos();
+                return true;
             }
         }
 
@@ -189,7 +198,41 @@ namespace Consultorio
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
+            //if (validaCPF(mskCPF.Text) &&
+            //validaEmail(txtEmail.Text))
             verificarCampo();
+
+            // Executar o método de cadastrar paciente
+            cadastrarPaciente();
+        }
+
+        public void cadastrarPaciente()
+        {
+            MySqlCommand comm = new MySqlCommand();
+
+            comm.CommandText = "insert into tb_pacientes (nome_pac, email_pac, telefone_pac, cpf_pac, endereco_pac, numero_pac, cep_pac, complemento_pac, bairro_pac, cidade_pac, uf_pac) " +
+                "values (@nome, @email, @telefone, @cpf, @endereco, @numero, @cep, @complemento, @bairro, @cidade, @uf);";
+            comm.CommandType = CommandType.Text;
+            comm.Parameters.Clear();
+            comm.Parameters.Add("@nome", MySqlDbType.VarChar, 100).Value = txtNome.Text;
+            comm.Parameters.Add("@email", MySqlDbType.VarChar, 100).Value = txtEmail.Text;
+            comm.Parameters.Add("@telefone", MySqlDbType.VarChar, 14).Value = mskTelefone.Text;
+            comm.Parameters.Add("@cpf", MySqlDbType.VarChar, 14).Value = mskCPF.Text;
+            comm.Parameters.Add("@endereco", MySqlDbType.VarChar, 100).Value = txtEndereco.Text;
+            comm.Parameters.Add("@numero", MySqlDbType.VarChar, 10).Value = txtNumero.Text;
+            comm.Parameters.Add("@cep", MySqlDbType.VarChar, 8).Value = mskCEP.Text;
+            comm.Parameters.Add("@complemento", MySqlDbType.VarChar, 50).Value = txtComplemento.Text;
+            comm.Parameters.Add("@bairro", MySqlDbType.VarChar, 50).Value = txtBairro.Text;
+            comm.Parameters.Add("@cidade", MySqlDbType.VarChar, 50).Value = txtCidade.Text;
+            comm.Parameters.Add("@uf", MySqlDbType.VarChar, 2).Value = cbbEstados.Text;
+
+            comm.Connection = Conexao.obterConexao();
+
+            int res = comm.ExecuteNonQuery();
+            MessageBox.Show("Valores inseridos com sucesso!" + res, "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Conexao.fecharConexao();
+            limparCampos();
         }
 
         private void btnCarregaEndereco_Click(object sender, EventArgs e)
