@@ -33,5 +33,20 @@ namespace Consultorio
                 conn.Close();
             }
         }
+
+        public static bool testarConexao()
+        {
+            conn = new MySqlConnection(connString);
+            try
+            {
+                conn.Open();
+                conn.Close();
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
+        }
     }
 }
