@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace Consultorio
 {
@@ -22,35 +23,55 @@ namespace Consultorio
 
         private void rdbCodigo_CheckedChanged(object sender, EventArgs e)
         {
-            txtDescricao.Enabled = true;
+            txtDescricao.Enabled = true; 
+            txtDescricao.Clear();
+            ltbResultado.Items.Clear();
             txtDescricao.Focus();
         }
 
         private void rdbNome_CheckedChanged(object sender, EventArgs e)
         {
             txtDescricao.Enabled = true;
+            txtDescricao.Clear();
+            ltbResultado.Items.Clear();
             txtDescricao.Focus();
         }
 
         private void btnLimpar_Click(object sender, EventArgs e)
         {
             txtDescricao.Clear();
-            txtDescricao.Enabled = false;
             ltbResultado.Items.Clear();
-            rdbNome.Checked = false;
-            rdbCodigo.Checked = false;
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
-            //ltbResultado.Items.Clear();
             if (rdbCodigo.Checked)
             {
-                ltbResultado.Items.Add(txtDescricao.Text);
+                if(txtDescricao.Text == "")
+                {
+                    MessageBox.Show("Informe um valor a ser pesquisado", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    txtDescricao.Focus();
+                }
+                else
+                {
+                    pesquisaPorCodigo(txtDescricao.Text);
+                }
             }
             else if (rdbNome.Checked)
             {
-                ltbResultado.Items.Add(txtDescricao.Text);
+                if (txtDescricao.Text == "")
+                {
+                    MessageBox.Show("Informe um valor a ser pesquisado", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    txtDescricao.Focus();
+                }
+                else
+                {
+                    pesquisaPorNome(txtDescricao.Text);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Escolha uma das duas opções de pesquisa", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -63,6 +84,53 @@ namespace Consultorio
                 MessageBox.Show($"Índice selecionado: {indice}\nValor: {valor}");
                 Console.WriteLine($"Valor: {valor} - Índice: {indice}");
             }
+        }
+
+        public void pesquisaPorNome(string nome)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = $"select * from tb_pacientes where nome_pac like '%{nome}%';";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conexao.obterConexao();
+
+            MySqlDataReader DR;
+            
+            DR = comm.ExecuteReader();
+            ltbResultado.Items.Clear();
+            while (DR.Read())
+            {
+                ltbResultado.Items.Add($"{DR.GetInt32(0)} {DR.GetString(1)}");
+            }
+
+            Conexao.fecharConexao();
+        }
+
+        public void pesquisaPorCodigo(string codigo)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = $"select * from tb_pacientes where cod_pac like '%{codigo}%';";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conexao.obterConexao();
+
+            MySqlDataReader DR;
+
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            ltbResultado.Items.Clear();
+
+            try
+            {
+                ltbResultado.Items.Add($"{DR.GetInt32(0)} - {DR.GetString(1)}");
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Nenhum dado encontrado.", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                txtDescricao.Clear();
+                txtDescricao.Focus();
+            }
+
+            Conexao.fecharConexao();
         }
     }
 }
