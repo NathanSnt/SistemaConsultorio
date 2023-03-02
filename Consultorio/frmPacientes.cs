@@ -32,6 +32,22 @@ namespace Consultorio
             InitializeComponent();
             desabilitarCampos();
             carregarComboBox();
+            testarConexaoBanco();
+        }
+
+        public void testarConexaoBanco()
+        {
+            bool bancoOnline = Conexao.testarConexao();
+            if (bancoOnline)
+            {
+                lblEstadoDoBanco.Text = "Online";
+                lblEstadoDoBanco.ForeColor = Color.Green;
+            }
+            else
+            {
+                lblEstadoDoBanco.Text = "Offline";
+                lblEstadoDoBanco.ForeColor = Color.Red;
+            }
         }
 
         public void carregarComboBox()
@@ -83,13 +99,14 @@ namespace Consultorio
             btnCadastrar.Enabled = false;
             txtComplemento.Enabled = false;
             txtNumero.Enabled = false;
+            btnNovo.Enabled = true;
         }
 
         public void habilitarCampos()
         {
             mskCPF.Enabled = true;
             mskCEP.Enabled = true;
-            btnNovo.Enabled = true;
+            //btnNovo.Enabled = true;
             txtNome.Enabled = true;
             txtEmail.Enabled = true;
             btnLimpar.Enabled = true;
@@ -166,9 +183,22 @@ namespace Consultorio
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
-            frmMenuPrincipal voltar = new frmMenuPrincipal();
-            voltar.Show();
-            this.Hide();
+            if (!btnNovo.Enabled)
+            {
+                DialogResult res = MessageBox.Show("Todas as informações digitadas serão perdidas, continuar?", "Mensagem do Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                if (res == DialogResult.Yes)
+                {
+                    limparCampos();
+                    desabilitarCampos();
+                }
+            }
+            else
+            {
+                frmMenuPrincipal voltar = new frmMenuPrincipal();
+                voltar.Show();
+                this.Hide();
+            }
         }
 
         private void frmPacientes_Load(object sender, EventArgs e)

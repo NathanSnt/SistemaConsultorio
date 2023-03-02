@@ -39,6 +39,10 @@ namespace Consultorio
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnAlterar = new System.Windows.Forms.Button();
             this.gpbMedico = new System.Windows.Forms.GroupBox();
+            this.lblComplemento = new System.Windows.Forms.Label();
+            this.txtComplemento = new System.Windows.Forms.TextBox();
+            this.lblNumero = new System.Windows.Forms.Label();
+            this.txtNumero = new System.Windows.Forms.TextBox();
             this.mskCPF = new System.Windows.Forms.MaskedTextBox();
             this.lblCPF = new System.Windows.Forms.Label();
             this.lblCidade = new System.Windows.Forms.Label();
@@ -59,10 +63,8 @@ namespace Consultorio
             this.lblNome = new System.Windows.Forms.Label();
             this.cbbEstados = new System.Windows.Forms.ComboBox();
             this.lblEstado = new System.Windows.Forms.Label();
-            this.lblNumero = new System.Windows.Forms.Label();
-            this.txtNumero = new System.Windows.Forms.TextBox();
-            this.lblComplemento = new System.Windows.Forms.Label();
-            this.txtComplemento = new System.Windows.Forms.TextBox();
+            this.lblEstadoBanco = new System.Windows.Forms.Label();
+            this.lblEstadoDoBanco = new System.Windows.Forms.Label();
             this.pnlMenu.SuspendLayout();
             this.gpbMedico.SuspendLayout();
             this.SuspendLayout();
@@ -218,6 +220,44 @@ namespace Consultorio
             this.gpbMedico.TabIndex = 0;
             this.gpbMedico.TabStop = false;
             this.gpbMedico.Text = "Informações do médico";
+            // 
+            // lblComplemento
+            // 
+            this.lblComplemento.AutoSize = true;
+            this.lblComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblComplemento.Location = new System.Drawing.Point(6, 290);
+            this.lblComplemento.Name = "lblComplemento";
+            this.lblComplemento.Size = new System.Drawing.Size(108, 20);
+            this.lblComplemento.TabIndex = 27;
+            this.lblComplemento.Text = "Complemento";
+            // 
+            // txtComplemento
+            // 
+            this.txtComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtComplemento.Location = new System.Drawing.Point(10, 313);
+            this.txtComplemento.MaxLength = 50;
+            this.txtComplemento.Name = "txtComplemento";
+            this.txtComplemento.Size = new System.Drawing.Size(302, 26);
+            this.txtComplemento.TabIndex = 26;
+            // 
+            // lblNumero
+            // 
+            this.lblNumero.AutoSize = true;
+            this.lblNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumero.Location = new System.Drawing.Point(426, 161);
+            this.lblNumero.Name = "lblNumero";
+            this.lblNumero.Size = new System.Drawing.Size(65, 20);
+            this.lblNumero.TabIndex = 25;
+            this.lblNumero.Text = "Número";
+            // 
+            // txtNumero
+            // 
+            this.txtNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNumero.Location = new System.Drawing.Point(430, 184);
+            this.txtNumero.MaxLength = 50;
+            this.txtNumero.Name = "txtNumero";
+            this.txtNumero.Size = new System.Drawing.Size(83, 26);
+            this.txtNumero.TabIndex = 24;
             // 
             // mskCPF
             // 
@@ -413,49 +453,30 @@ namespace Consultorio
             this.lblEstado.TabIndex = 7;
             this.lblEstado.Text = "Estado";
             // 
-            // lblNumero
+            // lblEstadoBanco
             // 
-            this.lblNumero.AutoSize = true;
-            this.lblNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumero.Location = new System.Drawing.Point(426, 161);
-            this.lblNumero.Name = "lblNumero";
-            this.lblNumero.Size = new System.Drawing.Size(65, 20);
-            this.lblNumero.TabIndex = 25;
-            this.lblNumero.Text = "Número";
+            this.lblEstadoBanco.AutoSize = true;
+            this.lblEstadoBanco.Location = new System.Drawing.Point(29, 468);
+            this.lblEstadoBanco.Name = "lblEstadoBanco";
+            this.lblEstadoBanco.Size = new System.Drawing.Size(91, 13);
+            this.lblEstadoBanco.TabIndex = 12;
+            this.lblEstadoBanco.Text = "Estado do banco:";
             // 
-            // txtNumero
+            // lblEstadoDoBanco
             // 
-            this.txtNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNumero.Location = new System.Drawing.Point(430, 184);
-            this.txtNumero.MaxLength = 50;
-            this.txtNumero.Name = "txtNumero";
-            this.txtNumero.Size = new System.Drawing.Size(83, 26);
-            this.txtNumero.TabIndex = 24;
-            // 
-            // lblComplemento
-            // 
-            this.lblComplemento.AutoSize = true;
-            this.lblComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblComplemento.Location = new System.Drawing.Point(6, 290);
-            this.lblComplemento.Name = "lblComplemento";
-            this.lblComplemento.Size = new System.Drawing.Size(108, 20);
-            this.lblComplemento.TabIndex = 27;
-            this.lblComplemento.Text = "Complemento";
-            // 
-            // txtComplemento
-            // 
-            this.txtComplemento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtComplemento.Location = new System.Drawing.Point(10, 313);
-            this.txtComplemento.MaxLength = 50;
-            this.txtComplemento.Name = "txtComplemento";
-            this.txtComplemento.Size = new System.Drawing.Size(302, 26);
-            this.txtComplemento.TabIndex = 26;
+            this.lblEstadoDoBanco.AutoSize = true;
+            this.lblEstadoDoBanco.Location = new System.Drawing.Point(124, 468);
+            this.lblEstadoDoBanco.Name = "lblEstadoDoBanco";
+            this.lblEstadoDoBanco.Size = new System.Drawing.Size(0, 13);
+            this.lblEstadoDoBanco.TabIndex = 13;
             // 
             // frmPacientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(780, 557);
+            this.Controls.Add(this.lblEstadoDoBanco);
+            this.Controls.Add(this.lblEstadoBanco);
             this.Controls.Add(this.gpbMedico);
             this.Controls.Add(this.pnlMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -469,6 +490,7 @@ namespace Consultorio
             this.gpbMedico.ResumeLayout(false);
             this.gpbMedico.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -507,5 +529,7 @@ namespace Consultorio
         private System.Windows.Forms.TextBox txtComplemento;
         private System.Windows.Forms.Label lblNumero;
         private System.Windows.Forms.TextBox txtNumero;
+        private System.Windows.Forms.Label lblEstadoBanco;
+        private System.Windows.Forms.Label lblEstadoDoBanco;
     }
 }
