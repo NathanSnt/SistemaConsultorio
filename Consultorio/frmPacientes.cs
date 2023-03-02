@@ -35,6 +35,43 @@ namespace Consultorio
             testarConexaoBanco();
         }
 
+        // Criando construtor com parâmetros
+        public frmPacientes(string nome)
+        {
+            InitializeComponent();
+            desabilitarCampos();
+            carregarComboBox();
+            testarConexaoBanco();
+            preencheCampos(nome);
+        }
+
+        public void preencheCampos(string nome)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = $"select * from tb_pacientes where nome_pac like '%{nome}%';";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conexao.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            mskCodigo.Text = DR.GetInt32(0).ToString();
+            txtNome.Text = DR.GetString(1);
+            txtEmail.Text = DR.GetString(2);
+            mskTelefone.Text = DR.GetString(3);
+            mskCPF.Text = DR.GetString(4);
+            txtEndereco.Text = DR.GetString(5);
+            txtNumero.Text = DR.GetString(6);
+            mskCEP.Text = DR.GetString(7);
+            txtBairro.Text = DR.GetString(8);
+            txtCidade.Text = DR.GetString(9);
+            txtComplemento.Text = DR.GetString(10);
+            cbbEstados.Text = DR.GetString(11);
+
+            Conexao.fecharConexao();
+        }
+
         public void testarConexaoBanco()
         {
             bool bancoOnline = Conexao.testarConexao();
@@ -106,7 +143,6 @@ namespace Consultorio
         {
             mskCPF.Enabled = true;
             mskCEP.Enabled = true;
-            //btnNovo.Enabled = true;
             txtNome.Enabled = true;
             txtEmail.Enabled = true;
             btnLimpar.Enabled = true;

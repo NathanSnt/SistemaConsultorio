@@ -79,11 +79,12 @@ namespace Consultorio
         {
             if (ltbResultado.Items.Count > 0)
             {
-                int indice = ltbResultado.SelectedIndex;
                 string valor = ltbResultado.SelectedItem.ToString();
-                MessageBox.Show($"Índice selecionado: {indice}\nValor: {valor}");
-                Console.WriteLine($"Valor: {valor} - Índice: {indice}");
+                frmPacientes abrir = new frmPacientes(valor);
+                abrir.Show();
+                this.Hide();
             }
+
         }
 
         public void pesquisaPorNome(string nome)
@@ -94,12 +95,11 @@ namespace Consultorio
             comm.Connection = Conexao.obterConexao();
 
             MySqlDataReader DR;
-            
             DR = comm.ExecuteReader();
             ltbResultado.Items.Clear();
             while (DR.Read())
             {
-                ltbResultado.Items.Add($"{DR.GetInt32(0)} {DR.GetString(1)}");
+                ltbResultado.Items.Add(DR.GetString(1));
             }
 
             Conexao.fecharConexao();
@@ -113,7 +113,6 @@ namespace Consultorio
             comm.Connection = Conexao.obterConexao();
 
             MySqlDataReader DR;
-
             DR = comm.ExecuteReader();
             DR.Read();
 
@@ -121,7 +120,7 @@ namespace Consultorio
 
             try
             {
-                ltbResultado.Items.Add($"{DR.GetInt32(0)} - {DR.GetString(1)}");
+                ltbResultado.Items.Add(DR.GetString(1));
             }
             catch (MySqlException)
             {

@@ -138,6 +138,7 @@ namespace Consultorio
             this.Controls.Add(this.ltbResultado);
             this.Controls.Add(this.gpbPesquisa);
             this.Name = "frmPesquisar";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pesquisar";
             this.gpbPesquisa.ResumeLayout(false);
             this.gpbPesquisa.PerformLayout();
