@@ -29,6 +29,7 @@ namespace Consultorio
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPacientes));
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.btnNovo = new System.Windows.Forms.Button();
@@ -65,6 +66,7 @@ namespace Consultorio
             this.lblEstado = new System.Windows.Forms.Label();
             this.lblEstadoBanco = new System.Windows.Forms.Label();
             this.lblEstadoDoBanco = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pnlMenu.SuspendLayout();
             this.gpbMedico.SuspendLayout();
             this.SuspendLayout();
@@ -172,6 +174,7 @@ namespace Consultorio
             this.btnExcluir.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExcluir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnExcluir.UseVisualStyleBackColor = true;
+            this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
             // 
             // btnAlterar
             // 
@@ -186,6 +189,7 @@ namespace Consultorio
             this.btnAlterar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAlterar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAlterar.UseVisualStyleBackColor = true;
+            this.btnAlterar.Click += new System.EventHandler(this.btnAlterar_Click);
             // 
             // gpbMedico
             // 
@@ -531,5 +535,6 @@ namespace Consultorio
         private System.Windows.Forms.TextBox txtNumero;
         private System.Windows.Forms.Label lblEstadoBanco;
         private System.Windows.Forms.Label lblEstadoDoBanco;
+        private System.Windows.Forms.Timer timer1;
     }
 }

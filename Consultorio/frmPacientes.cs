@@ -32,17 +32,16 @@ namespace Consultorio
             InitializeComponent();
             desabilitarCampos();
             carregarComboBox();
-            testarConexaoBanco();
+            timer1.Enabled = true;
         }
 
         // Criando construtor com parâmetros
         public frmPacientes(string nome)
         {
             InitializeComponent();
-            desabilitarCampos();
             carregarComboBox();
-            testarConexaoBanco();
             preencheCampos(nome);
+            CamposUpdateDelete();
         }
 
         public void preencheCampos(string nome)
@@ -64,12 +63,22 @@ namespace Consultorio
             txtEndereco.Text = DR.GetString(5);
             txtNumero.Text = DR.GetString(6);
             mskCEP.Text = DR.GetString(7);
-            txtBairro.Text = DR.GetString(8);
-            txtCidade.Text = DR.GetString(9);
-            txtComplemento.Text = DR.GetString(10);
+            txtComplemento.Text = DR.GetString(8);
+            txtBairro.Text = DR.GetString(9);
+            txtCidade.Text = DR.GetString(10);
             cbbEstados.Text = DR.GetString(11);
 
             Conexao.fecharConexao();
+        }
+
+        public void CamposUpdateDelete()
+        {
+            btnAlterar.Enabled = true;
+            btnExcluir.Enabled = true;
+            mskCodigo.Enabled = false;
+            btnNovo.Enabled = false;
+            btnCadastrar.Enabled = false;
+            btnLimpar.Enabled = false;
         }
 
         public void testarConexaoBanco()
@@ -149,8 +158,6 @@ namespace Consultorio
             txtBairro.Enabled = true;
             txtCidade.Enabled = true;
             cbbEstados.Enabled = true;
-            btnAlterar.Enabled = true;
-            btnExcluir.Enabled = true;
             txtEndereco.Enabled = true;
             btnCadastrar.Enabled = true;
             mskTelefone.Enabled = true;
@@ -175,9 +182,7 @@ namespace Consultorio
                 || mskCEP.Text.Equals("     -")
                 || mskTelefone.Text.Contains("  ")
                 || mskCPF.Text.Equals("   .   .   -")
-                || mskTelefone.Text.Equals("(  )      -")
-                || cpfValido
-                || emailValido)
+                || mskTelefone.Text.Equals("(  )      -"))
             {
                 MessageBox.Show("Favor inserir valores corretamente!",
                     "Mensagem do Sistema",
@@ -188,15 +193,30 @@ namespace Consultorio
                 txtNome.Focus();
                 return false;
             }
+            else if (!cpfValido)
+            {
+                MessageBox.Show("Favor inserir um CPF válido!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+
+                mskCPF.Focus();
+                return false;
+            }
+            else if (!emailValido)
+            {
+                MessageBox.Show("Favor inserir um E-mail válido!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+
+                txtEmail.Focus();
+                return false;
+            }
             else
             {
-                //MessageBox.Show("Cadastrado com Sucesso!",
-                //    "Mensagem do Sistema",
-                //    MessageBoxButtons.OK,
-                //    MessageBoxIcon.Information,
-                //    MessageBoxDefaultButton.Button1);
-                desabilitarCampos();
-                //limparCampos();
                 return true;
             }
         }
@@ -219,9 +239,9 @@ namespace Consultorio
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
-            if (!btnNovo.Enabled)
+            if (!btnNovo.Enabled  || txtNome.Text != "")
             {
-                DialogResult res = MessageBox.Show("Todas as informações digitadas serão perdidas, continuar?", "Mensagem do Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                DialogResult res = MessageBox.Show("Todas as alterações serão perdidas, continuar?", "Mensagem do Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
                 if (res == DialogResult.Yes)
                 {
@@ -258,18 +278,35 @@ namespace Consultorio
 
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
-            frmPesquisar abrir = new frmPesquisar();
-            abrir.ShowDialog();
+            if (Conexao.testarConexao())
+            {
+                frmPesquisar abrir = new frmPesquisar();
+                abrir.ShowDialog();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("O banco de dados está offline!\n Verifique a conexão!", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
-            //if (validaCPF(mskCPF.Text) &&
-            //validaEmail(txtEmail.Text))
-            verificarCampo();
+            if ((Conexao.testarConexao()))
+            {
+                bool camposValidos = verificarCampo();
 
-            // Executar o método de cadastrar paciente
-            cadastrarPaciente();
+                // Executar o método de cadastrar paciente
+                if (camposValidos)
+                {
+                    cadastrarPaciente();
+                    desabilitarCampos();
+                }
+            }
+            else
+            {
+                MessageBox.Show("O banco de dados está offline!\n Verifique a conexão!", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void cadastrarPaciente()
@@ -295,7 +332,14 @@ namespace Consultorio
             comm.Connection = Conexao.obterConexao();
 
             int res = comm.ExecuteNonQuery();
-            MessageBox.Show("Valores inseridos com sucesso!" + res, "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (res == 1)
+            {
+                MessageBox.Show("Valores inseridos com sucesso!", "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Erro ao inserir registro", "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             Conexao.fecharConexao();
             limparCampos();
@@ -471,9 +515,9 @@ namespace Consultorio
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
-                bool valida = validaCPF(mskCPF.Text);
+                bool valido = validaCPF(mskCPF.Text);
 
-                if (valida == true)
+                if (valido)
                 {
                     mskCEP.Focus();
                 }
@@ -494,9 +538,9 @@ namespace Consultorio
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
-                bool valida = validaEmail(txtEmail.Text);
+                bool valido = validaEmail(txtEmail.Text);
 
-                if (valida == true)
+                if (valido)
                 {
                     mskTelefone.Focus();
                 }
@@ -510,6 +554,107 @@ namespace Consultorio
                     txtEmail.Clear();
                     txtEmail.Focus();
                 }
+            }
+        }
+
+        public bool alteraPaciente(int codigoPaciente)
+        {
+            bool dadosValidos = verificarCampo();
+
+            if (dadosValidos)
+            {
+                MySqlCommand comm = new MySqlCommand();
+                comm.CommandText = $"update tb_pacientes set nome_pac = @nome, email_pac = @email, telefone_pac = @telefone, " +
+                    $"cpf_pac = @cpf, endereco_pac = @endereco, numero_pac = @numero, cep_pac = @cep, complemento_pac = @complemento, bairro_pac = @bairro," +
+                    $" cidade_pac = @cidade, uf_pac = @uf where cod_pac = {codigoPaciente}; ";
+                comm.CommandType = CommandType.Text;
+                comm.Connection = Conexao.obterConexao();
+
+                comm.Parameters.Clear();
+
+                comm.Parameters.Add("@nome", MySqlDbType.VarChar, 100).Value = txtNome.Text;
+                comm.Parameters.Add("@email", MySqlDbType.VarChar, 100).Value = txtEmail.Text;
+                comm.Parameters.Add("@telefone", MySqlDbType.VarChar, 14).Value = mskTelefone.Text;
+                comm.Parameters.Add("@cpf", MySqlDbType.VarChar, 14).Value = mskCPF.Text;
+                comm.Parameters.Add("@endereco", MySqlDbType.VarChar, 100).Value = txtEndereco.Text;
+                comm.Parameters.Add("@numero", MySqlDbType.VarChar, 10).Value = txtNumero.Text;
+                comm.Parameters.Add("@cep", MySqlDbType.VarChar, 8).Value = mskCEP.Text;
+                comm.Parameters.Add("@complemento", MySqlDbType.VarChar, 50).Value = txtComplemento.Text;
+                comm.Parameters.Add("@bairro", MySqlDbType.VarChar, 50).Value = txtBairro.Text;
+                comm.Parameters.Add("@cidade", MySqlDbType.VarChar, 50).Value = txtCidade.Text;
+                comm.Parameters.Add("@uf", MySqlDbType.VarChar, 2).Value = cbbEstados.Text;
+
+                int res = comm.ExecuteNonQuery();
+                if (res == 1)
+                {
+                    MessageBox.Show("Registro alterado com sucesso!", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Erro ao alterar o registro", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                Conexao.fecharConexao();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            int codigo = int.Parse(mskCodigo.Text);
+            bool alterou = alteraPaciente(codigo);
+            if (alterou)
+            {
+                limparCampos();
+                desabilitarCampos();
+            }
+        }
+
+        public void deletaPaciente(int codigoPaciente)
+        {
+            if (Conexao.testarConexao())
+            {
+                MySqlCommand comm = new MySqlCommand();
+                comm.CommandText = $"delete from tb_pacientes where cod_pac = {codigoPaciente};";
+                comm.CommandType = CommandType.Text;
+                comm.Connection = Conexao.obterConexao();
+
+                DialogResult confirma = MessageBox.Show("Deseja mesmo realizar a exclusão?", "Mensagem do Sistema", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (confirma == DialogResult.Yes)
+                {
+                    int res = comm.ExecuteNonQuery();
+                    if (res == 1)
+                    {
+                        MessageBox.Show("Registro Excluido com Sucesso!", "Mensagem do Sistema", MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao excluir o registro", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                Conexao.fecharConexao();
+            }
+            else
+            {
+                MessageBox.Show("O banco de dados está offline!\n Verifique a conexão!", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            if (Conexao.testarConexao())
+            {
+                int codigo = int.Parse(mskCodigo.Text);
+                deletaPaciente(codigo);
+                limparCampos();
+                desabilitarCampos();
+            }
+            else
+            {
+                MessageBox.Show("O banco de dados está offline!\n Verifique a conexão!", "Mensagem do Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
