@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using MySql.Data.MySqlClient;
 
 namespace Consultorio
 {
@@ -27,13 +28,28 @@ namespace Consultorio
             InitializeComponent();
         }
 
+        public bool acessarSistema(string usuario, string senha)
+        {
+            MySqlCommand comm = new MySqlCommand
+            {
+                CommandText = $"select * from tb_usuarios where nome_usu='{usuario}' and senha_usu='{senha}';",
+                CommandType = CommandType.Text,
+                Connection = Conexao.obterConexao()
+            };
+            
+            MySqlDataReader DR = comm.ExecuteReader();
+            bool resultado = DR.HasRows;
+            Conexao.fecharConexao();
+            
+            return resultado;
+        }
+
         private void btnEntrar_Click(object sender, EventArgs e)
         {
             string usuario = txtUsuario.Text;
             string senha = txtSenha.Text;
             
-            //if (usuario == "admin" && senha == "admin")
-            if (usuario.Equals("admin") && senha.Equals("admin"))
+            if (acessarSistema(usuario, senha))
             {
                 //Hide();
                 //using (frmMenuPrincipal menu = new frmMenuPrincipal())
@@ -45,7 +61,7 @@ namespace Consultorio
             }
             else
             {
-                MessageBox.Show("Usuário ou senha inválidos!", "Aviso do sistema", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Usuário ou senha incorretos!", "Aviso do sistema", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 txtUsuario.Clear();
                 txtSenha.Clear();
                 txtUsuario.Focus();

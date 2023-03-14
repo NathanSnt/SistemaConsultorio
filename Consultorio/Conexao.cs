@@ -9,6 +9,7 @@ namespace Consultorio
 {
     class Conexao
     {
+        //private static string connString = "Server=10.23.49.43;port=3306; uid=senac; pwd='123456'; database=db_clinica_medica"; // Acessando o banco em outra máquina.
         private static string connString = "Server=localhost;port=3306; uid=senac; pwd='@jqEuO6(4jkKg@pk'; database=db_clinica_medica";
         private static MySqlConnection conn = null;
 
