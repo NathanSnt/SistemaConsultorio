@@ -70,11 +70,18 @@ namespace Consultorio
 
         private void btnCadastrar_Click_1(object sender, EventArgs e)
         {
-            dgvRegistros.Rows.Add(txtCodigo.Text, txtNome.Text, chkAnuncios.Checked);
-            txtCodigo.Clear();
-            txtNome.Clear();
-            chkAnuncios.Checked = false;
-            txtCodigo.Focus();
+            if (txtCodigo.Equals("") || txtNome.Equals(""))
+            {
+                dgvRegistros.Rows.Add(txtCodigo.Text, txtNome.Text, chkAnuncios.Checked);
+                txtCodigo.Clear();
+                txtNome.Clear();
+                chkAnuncios.Checked = false;
+            }
+            else
+            {
+                MessageBox.Show("Preencha todos os campos!", "Mensagem do sistema");
+            }
+                txtCodigo.Focus();
         }
 
         private void btnLimpar_Click_1(object sender, EventArgs e)
